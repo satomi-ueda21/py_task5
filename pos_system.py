@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime
+import eel
 
 now = datetime.datetime.now()
 CSV_PATH = "./item_master.csv"
@@ -34,6 +35,8 @@ class Order:
     def add_item_order(self,item_code,item_pieces):
         self.item_order_list.append(item_code)
         self.item_order_count.append(item_pieces)
+        print(item_code)
+        print(item_pieces)
 
     #商品コードが一致する商品名と価格を返す
     def get_item_order(self,order_code):
@@ -64,6 +67,7 @@ class Order:
             res = self.get_item_order(order_code)
             if res != None:
                 print(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
+                eel.view_log_js(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
                 self.receipt_output(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
                 self.total_money = self.total_money + int(res[1] * item_piece)
                 self.total_items = self.total_items + int(item_piece)
