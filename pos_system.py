@@ -21,6 +21,7 @@ class Item:
         self.item_name=item_name
         self.price=price
 
+
     # def get_price(self):
     #     return self.price
 
@@ -30,13 +31,13 @@ class Order:
         self.item_order_list=[]
         self.item_order_count = []
         self.item_master=item_master
+        self.total_money = 0
+        self.total_items = 0
 
     #オーダー時の商品コードと個数をそれぞれリストに格納
     def add_item_order(self,item_code,item_pieces):
         self.item_order_list.append(item_code)
         self.item_order_count.append(item_pieces)
-        print(item_code)
-        print(item_pieces)
 
     #商品コードが一致する商品名と価格を返す
     def get_item_order(self,order_code):
@@ -61,20 +62,22 @@ class Order:
 
     #オーダーされた商品内容と合計金額を表示
     def view_item_oreder(self):
-        self.total_money = 0
-        self.total_items = 0
-        for order_code, item_piece in zip(self.item_order_list, self.item_order_count):
-            res = self.get_item_order(order_code)
-            if res != None:
-                print(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
-                eel.view_log_js(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
-                self.receipt_output(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
-                self.total_money = self.total_money + int(res[1] * item_piece)
-                self.total_items = self.total_items + int(item_piece)
-            else:
-                print(f"商品コード{order_code}は存在しません。")
+        order_code = self.item_order_list[-1]
+        item_piece = self.item_order_count[-1]
+        res = self.get_item_order(order_code)
+        if res != None:
+            print(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
+            self.receipt_output(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
+            self.total_money = self.total_money + int(res[1] * item_piece)
+            self.total_items = self.total_items + int(item_piece)
+            eel.view_log_js(f"商品コード:{order_code} 商品名:{res[0]} 価格:{res[1]:,} 個数:{item_piece:,}")
+            eel.view_sum_js(f"現在合計:{self.total_money:,}円")
+        else:
+            print(f"商品コード{order_code}は存在しません。")
+            eel.alert_js(f"商品コード{order_code}は存在しません。")
         print(f"合計{self.total_items:,}個。合計金額{self.total_money:,}円です")
-        self.receipt_output(f"合計{self.total_items:,}個。合計金額{self.total_money:,}円です")
+        # self.receipt_output(f"合計{self.total_items:,}個。合計金額{self.total_money:,}円です")
+
 
     #支払金額を受け付け後、お釣りを表示する
     def account_item_order(self):
@@ -87,6 +90,7 @@ class Order:
                 break
             else:
                 print("お金が足りません。もう一度支払金額を入力してください。")
+                eel.alert_js("お金が足りません。もう一度支払金額を入力してください。")
 
     #テキストファイルに出力
     def receipt_output(self, text):
