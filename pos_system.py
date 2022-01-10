@@ -104,6 +104,7 @@ class Order:
     def message_box(self):
         root = tk.Tk()
         root.withdraw()
+        root.attributes('-topmost', True)
         root.lift()
         root.focus_force()
         message = messagebox.askyesno('確認', 'リセットしますか？')

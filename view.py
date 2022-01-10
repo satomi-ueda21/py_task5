@@ -19,7 +19,7 @@ def item_order(item_code,item_pieces):
 @ eel.expose
 def order_end():
     order.receipt_output((f"合計{order.total_items:,}個。合計金額{order.total_money:,}円です"))
-    eel.view_sum_js(f"支払金額:{order.total_money:,}円")
+    eel.view_sum_js(f"支払金額:{order.total_money:,}円。お支払い金額を入力してください。")
 
 @ eel.expose
 def account_order(amount_pay):
@@ -29,7 +29,7 @@ def account_order(amount_pay):
 def order_reset():
     ret = order.message_box()
     if ret == True:
-        pass
+        order = pos_system.Order(item_master)
 
 desktop.start(app_name,end_point,size)
 #desktop.start(size=size,appName=app_name,endPoint=end_point)
