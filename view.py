@@ -2,6 +2,7 @@ import eel
 import desktop
 import pos_system
 
+
 app_name="html"
 end_point="index.html"
 size=(700,600)
@@ -19,6 +20,16 @@ def item_order(item_code,item_pieces):
 def order_end():
     order.receipt_output((f"合計{order.total_items:,}個。合計金額{order.total_money:,}円です"))
     eel.view_sum_js(f"支払金額:{order.total_money:,}円")
+
+@ eel.expose
+def account_order(amount_pay):
+    order.account_item_order(amount_pay)
+
+@ eel.expose
+def order_reset():
+    ret = order.message_box()
+    if ret == True:
+        pass
 
 desktop.start(app_name,end_point,size)
 #desktop.start(size=size,appName=app_name,endPoint=end_point)

@@ -15,8 +15,20 @@ end_button.addEventListener('click', () => {
     if (item_code.value == "" && item_pieces.value == "") {
         eel.order_end();
     } else {
-        alert("オーダーボタンを押してください。")
+        alert("オーダーボタンを押してください。");
     }
+})
+
+payment_button.addEventListener('click', () => {
+    if (amount_pay.value != "" ) {
+        eel.account_order(Number(amount_pay.value));
+    } else {
+        alert("支払金額を入力してください。");
+    }
+})
+
+reset_button.addEventListener('click', () => {
+    eel.order_reset();
 })
 
 eel.expose(view_log_js)
@@ -26,6 +38,10 @@ function view_log_js(text){
 eel.expose(view_sum_js)
 function view_sum_js(price) {
     document.getElementById('total_money').value = price;
+}
+eel.expose(change_money_js)
+function change_money_js(price) {
+    document.getElementById('change_money').value = price;
 }
 eel.expose(alert_js)
 function alert_js(text) {

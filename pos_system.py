@@ -1,6 +1,8 @@
 import pandas as pd
 import datetime
 import eel
+from tkinter import messagebox
+import tkinter as tk
 
 now = datetime.datetime.now()
 CSV_PATH = "./item_master.csv"
@@ -21,7 +23,6 @@ class Item:
         self.item_name=item_name
         self.price=price
 
-
     # def get_price(self):
     #     return self.price
 
@@ -33,6 +34,9 @@ class Order:
         self.item_master=item_master
         self.total_money = 0
         self.total_items = 0
+
+    # def reset(self):
+    #     self.__init__(self)
 
     #オーダー時の商品コードと個数をそれぞれリストに格納
     def add_item_order(self,item_code,item_pieces):
@@ -80,22 +84,31 @@ class Order:
 
 
     #支払金額を受け付け後、お釣りを表示する
-    def account_item_order(self):
-        while True:
-            self.amount_pay = int(input("支払金額を入力してください>>>"))
-            self.change_money = self.amount_pay - self.total_money
-            if self.change_money >= 0:
-                print(f"{self.amount_pay:,}円いただきました。お釣りは{self.change_money:,}円です。")
-                self.receipt_output(f"{self.amount_pay:,}円いただきました。お釣りは{self.change_money:,}円です。")
-                break
-            else:
-                print("お金が足りません。もう一度支払金額を入力してください。")
-                eel.alert_js("お金が足りません。もう一度支払金額を入力してください。")
+    def account_item_order(self,amount_pay):
+        # self.amount_pay = int(input("支払金額を入力してください>>>"))
+        self.change_money = amount_pay - self.total_money
+        if self.change_money >= 0:
+            print(f"{amount_pay:,}円いただきました。お釣りは{self.change_money:,}円です。")
+            self.receipt_output(f"{amount_pay:,}円いただきました。お釣りは{self.change_money:,}円です。")
+            eel.change_money_js(f"お釣り:{self.change_money:,}円")
+        else:
+            print("お金が足りません。もう一度支払金額を入力してください。")
+            eel.alert_js("お金が足りません。もう一度支払金額を入力してください。")
 
     #テキストファイルに出力
     def receipt_output(self, text):
         with open(RECEIPT_PATH, mode='a', encoding="utf-8_sig") as f:
             f.write(text + '\n')
+
+    #メッセージボックス表示
+    def message_box(self):
+        root = tk.Tk()
+        root.withdraw()
+        root.lift()
+        root.focus_force()
+        message = messagebox.askyesno('確認', 'リセットしますか？')
+        root.destroy()
+        return message
 
 
 ### メイン処理
