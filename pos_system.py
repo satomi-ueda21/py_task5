@@ -6,7 +6,8 @@ import tkinter as tk
 
 now = datetime.datetime.now()
 CSV_PATH = "./item_master.csv"
-RECEIPT_PATH = str("./receipt_{0:%m%d_%H%M}.txt").format(now)
+WORKER_CSV_PATH = "./worker_master.csv"
+RECEIPT_PATH = str("receipt/receipt_{0:%m%d_%H%M}.txt").format(now)
 
 #CSVからマスターデータの読み込み
 def item_master_csv():
@@ -35,8 +36,8 @@ class Order:
         self.total_money = 0
         self.total_items = 0
 
-    # def reset(self):
-    #     self.__init__(self)
+    def order_reset(self):
+        self.__init__(self)
 
     #オーダー時の商品コードと個数をそれぞれリストに格納
     def add_item_order(self,item_code,item_pieces):
@@ -110,6 +111,14 @@ class Order:
         message = messagebox.askyesno('確認', 'リセットしますか？')
         root.destroy()
         return message
+
+# 登録されている従業員コードをCSVから読み込み
+def worker_master_csv():
+    worker_master = []
+    df = pd.read_csv(WORKER_CSV_PATH, dtype={"worker_code":object}, header=0)
+    for worker in df["worker_code"]:
+        worker_master.append(worker)
+    return worker_master
 
 
 ### メイン処理

@@ -11,7 +11,13 @@
     <title>eelテスト</title>
     </head>
     <body>
-        <div class="flex flex-col w-auto px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 md:px-12 lg:px-14">
+        <div class="flex mt-2 md:flex-nowrap flex-wrap justify-center items-end md:justify-start">
+            <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
+            <input type="text" id="worker_code" name="worker_code" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="従業員コード入力">
+            </div>
+            <button id="login_button" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">ログイン</button>
+        </div>
+        <div id="contents" class="flex flex-col w-auto px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 md:px-12 lg:px-14">
             <div class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl dark:text-white">
                 Pos System
             </div>

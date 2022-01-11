@@ -1,6 +1,17 @@
-// let item_code = document.getElementById('item_code')
-// let item_pieces = document.getElementById('item_pieces')
-// let word = document.getElementById('keyword')
+// ログイン前はオーダー部分非表示
+document.getElementById("contents").style.display = "none";
+//ログイン後オーダー部分表示
+login_button.addEventListener('click', async () => {
+    const number = await eel.pos_login(worker_code.value)();
+    console.table(number)
+    if (number){
+        document.getElementById("contents").style.display = "block";
+    } else {
+        alert("従業員コードが違います")
+    }
+})
+
+// オーダーボタンの動作
 order_button.addEventListener('click', () => {
     if (item_code.value != "" && item_pieces.value != "") {
         eel.item_order(item_code.value, Number(item_pieces.value));
@@ -11,6 +22,7 @@ order_button.addEventListener('click', () => {
     }
 })
 
+// 完了ボタンの動作
 end_button.addEventListener('click', () => {
     if (item_code.value == "" && item_pieces.value == "") {
         eel.order_end();
@@ -19,6 +31,7 @@ end_button.addEventListener('click', () => {
     }
 })
 
+// 支払ボタンの動作
 payment_button.addEventListener('click', () => {
     if (amount_pay.value != "" ) {
         eel.account_order(Number(amount_pay.value));
@@ -27,10 +40,18 @@ payment_button.addEventListener('click', () => {
     }
 })
 
-reset_button.addEventListener('click', () => {
-    eel.order_reset();
+// リセットボタンの動作
+reset_button.addEventListener('click', async () => {
+    const res = await eel.order_reset()();
+    if (res) {
+        document.getElementById('order_list').value = "";
+        document.getElementById('total_money').value = "";
+        document.getElementById('amount_pay').value = "";
+        document.getElementById('change_money').value = "";
+    }
 })
 
+// それぞれの表示部分の関数
 eel.expose(view_log_js)
 function view_log_js(text){
     document.getElementById('order_list').value += text + "\n";
