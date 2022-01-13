@@ -19,7 +19,7 @@ def pos_login(worker_code):
         if code == worker_code:
             print("return")
             return True
-
+        
 # オーダーコードと個数をリスト化、表示
 @ eel.expose
 def item_order(item_code,item_pieces):
